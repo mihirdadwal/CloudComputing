@@ -1,0 +1,18 @@
+[Unit]
+Description=WebDev Java Application
+After=network.target
+ConditionPathExists=/opt/userauth/prodwebappconfig.properties
+
+[Service]
+User=csye6225
+WorkingDirectory=/opt/userauth
+ExecStartPre=/bin/sh -c 'until [ -f /opt/userauth/dbconfig.properties ]; do sleep 5; done'
+ExecStart=/usr/bin/java -jar webdev-1.0.0.jar --spring.profiles.active=prod
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=csye6225
+
+[Install]
+WantedBy=multi-user.target
